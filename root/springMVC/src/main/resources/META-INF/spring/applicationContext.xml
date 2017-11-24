@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xsi:schemaLocation="  
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">  
+  
+    <bean id="httpServer" class="com.gg.springMVC.HttpServer" init-method="start" >
+    	<property name="serverPort" value="${gg.server.port}"/>
+    	<property name="webRoot" value="${gg.server.webroot}"/>
+    </bean>
+    
+    <import resource="classpath:META-INF/config/http/view.xml"/>
+    <import resource="classpath:META-INF/config/dubbo/dubboservice.xml"/>
+    <import resource="classpath:META-INF/config/action/action.xml"/>
+    <import resource="classpath:META-INF/config/config.xml"/>
+    <import resource="classpath:META-INF/config/dbconfig.xml"/>
+</beans>

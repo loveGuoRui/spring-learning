@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.gg</groupId>
+    <artifactId>root</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>springMVC</artifactId>
+  
+  <dependencies>
+    <!-- start spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+    <!-- end  -->
+
+    <!-- start pe -->
+    <!-- end  -->
+
+    <!-- start 内部模块引用 -->
+    <dependency>
+      <groupId>com.gg</groupId>
+      <artifactId>dubboBase</artifactId>
+      <version>${project.parent.version}</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>com.gg</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+        <dependency>
+      <groupId>com.gg</groupId>
+      <artifactId>db</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <!-- end  -->
+
+    <!-- start 必选第三方包调用（中央仓库） -->
+    <!--<dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+    </dependency> -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+    </dependency>
+        <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    </dependencies>
+</project>

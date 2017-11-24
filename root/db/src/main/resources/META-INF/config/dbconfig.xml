@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xsi:schemaLocation="  
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            ">  
+  
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" init-method="createPool" destroy-method="close">
+		 <constructor-arg ref="poolProperties"/>
+	</bean>
+	
+	<bean id="poolProperties" class="com.gg.db.PoolConfiguration" init-method="Decrypt">
+		<property name="driverClassName" value="${dataSource.driverClassName}" />
+		<property name="url" value="${dataSource.url}" />
+		<property name="username" value="${dataSource.username}" />
+		<property name="password" value="${dataSource.password}" />
+		<property name="initialSize" value="${dataSource.initialSize}" />
+		<property name="maxActive" value="${dataSource.maxActive}" />
+		<property name="maxIdle" value="${dataSource.maxIdle}" />
+		<property name="minIdle" value="${dataSource.minIdle}" />
+		<property name="validationQuery" value="${dataSource.validationQuery}" />
+		<property name="testWhileIdle" value="${dataSource.testWhileIdle}" />
+		<property name="name" value="dataSource" />
+	</bean>
+
+	<bean id="trsTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:META-INF/config/sql/sqlMap-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+		    
+</beans>

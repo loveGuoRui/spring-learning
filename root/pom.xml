@@ -1,0 +1,279 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.gg</groupId>
+  <artifactId>root</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>core</module>
+  	<module>db</module>
+  	<module>dubboBase</module>
+  	<module>springMVC</module>
+  </modules>
+  
+  <properties>
+    <!-- start spring -->
+    <spring.version>4.3.4.RELEASE</spring.version>
+    <spring.data.redis>1.7.1.RELEASE</spring.data.redis>
+    <!-- end  -->
+
+    <!-- start pe -->
+    <csii.pe.version>10.0.0</csii.pe.version>
+    <!-- end  -->
+
+    <!-- start 内部模块引用 -->
+    <!-- end  -->
+
+    <!-- start 必选第三方包调用（中央仓库） -->
+    <slf4j.version>1.7.12</slf4j.version>
+    <jetty.version>9.2.19.v20160908</jetty.version>
+    <jetty.plugin.version>6.1.26</jetty.plugin.version>
+    <dubbo.version>2.5.3</dubbo.version>
+    <jackson.mapper.version>1.9.13</jackson.mapper.version>
+    <jackson.version>2.8.4</jackson.version>
+    <fastjson.version>1.2.7</fastjson.version>
+    <xbean.version>3.14</xbean.version>
+    <activemq.version>5.10.2</activemq.version>
+    <ehcache.version>2.10.1</ehcache.version>
+    <mina.version>1.1.7</mina.version>
+    <zkclient.version>0.1</zkclient.version>
+    <commons.logging.version>1.1.1</commons.logging.version>
+    <logback.version>1.1.3</logback.version>
+    <junit.version>4.10</junit.version>
+    <dbcp.version>1.4</dbcp.version>
+    <ibatis.version>2.3.4.726</ibatis.version>
+    <mysql-connector.version>5.1.37</mysql-connector.version>
+    <quartz.version>2.2.1</quartz.version>
+    <commons.pool.version>1.6</commons.pool.version>
+    <citrus.webx.all.version>3.0.8</citrus.webx.all.version>
+    <rabbit.version>1.7.1.RELEASE</rabbit.version>
+    <!-- end  -->
+
+
+  </properties>
+
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- start spring -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jms</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-redis</artifactId>
+        <version>${spring.data.redis}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <!--<version>${spring.version}</version> -->
+        <version>3.2.13.RELEASE</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.session</groupId>
+        <artifactId>spring-session</artifactId>
+        <version>1.0.2.RELEASE</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.amqp</groupId>
+        <artifactId>spring-rabbit</artifactId>
+        <version>${rabbit.version}</version>
+      </dependency>
+      <!-- end  -->
+
+      <!-- start 内部模块引用 -->
+      <!-- end  -->
+
+      <!-- start 必选第三方包调用（中央仓库） -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>dubbo</artifactId>
+        <version>${dubbo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.citrus</groupId>
+        <artifactId>citrus-webx-all</artifactId>
+        <version>${citrus.webx.all.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-mapper-asl</artifactId>
+        <version>${jackson.mapper.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xbean</groupId>
+        <artifactId>xbean-spring</artifactId>
+        <version>${xbean.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+        <version>${ehcache.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-webapp</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.websocket</groupId>
+        <artifactId>websocket-server</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-jsp</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.mina</groupId>
+        <artifactId>mina-core</artifactId>
+        <version>${mina.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.sgroschupf</groupId>
+        <artifactId>zkclient</artifactId>
+        <version>${zkclient.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>${commons.logging.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>${dbcp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ibatis</groupId>
+        <artifactId>ibatis-sqlmap</artifactId>
+        <version>${ibatis.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql-connector.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.quartz-scheduler</groupId>
+        <artifactId>quartz</artifactId>
+        <version>${quartz.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-pool</groupId>
+        <artifactId>commons-pool</artifactId>
+        <version>${commons.pool.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.1</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-jdbc</artifactId>
+        <version>7.0.68</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.14</version>
+      </dependency>
+      <!-- end  -->
+
+
+      <!-- JUnit -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

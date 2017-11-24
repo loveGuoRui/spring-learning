@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="core">
+
+	<!-- add by 20170507 -->
+	<select id="queryTemplateTypeRule" resultClass="java.lang.String" parameterClass="java.lang.String">
+		select RULEDEF from PRM_RULE
+		where RULETYPE = 'TempTypeCtrl' AND RULEID = #templateTypeCode#
+	</select>
+	
+	<update id="updateIdValue" parameterClass="java.util.HashMap">
+		UPDATE OT_IDFACTORY SET IDVALUE=IDVALUE+#Cache# WHERE IDCODE=#IdCode#
+	</update>
+	
+	<select id="queryIdValue" parameterClass="java.lang.String" resultClass="java.lang.Long">
+		SELECT IDVALUE FROM OT_IDFACTORY WHERE IDCODE=#value#
+	</select>
+	
+	<select id="qryAccessChannels" resultClass="java.lang.String">
+		SELECT CHANNELID FROM PRM_CHANNELCONTRL WHERE STATUS='N' AND CHANNELTYPE='0'
+	</select>
+	
+	<select id="qrySendChannels" resultClass="java.lang.String">
+		SELECT SUBCHANNELID FROM PRM_SUBCHANNELCONTRL WHERE STATUS='N' AND CHANNELTYPE='1'
+	</select>
+	
+	<resultMap class="com.csii.mc.core.datamodel.Dept" id="querydept">
+		<result property="name" column="DEPTNAME" />
+		<result property="seq" column="DEPTSEQ" />
+		<result property="id" column="DEPTID" />
+		<result property="phone" column="PHONE" />
+	</resultMap>
+		<!-- 机构读取 -->
+	<select id="queryDept" parameterClass="java.lang.String" resultMap="querydept">
+		 SELECT DEPTNAME,DEPTID,PHONE
+		 FROM PRM_DEPT
+    </select>
+    
+   	<select id="queryTemplateByCode" resultClass="com.csii.mc.core.datamodel.Template"	parameterClass="java.lang.String">
+		select * from PRM_TEMPLATE where CODE like #code# 
+	</select>
+	
+	<!-- <select id="queryFieldByCode" resultClass="com.csii.mc.core.base.data.FieldData" parameterClass="java.lang.String">
+		select * from PRM_FIELD where CODE = #code#
+	</select> -->
+	
+	<resultMap class="java.util.HashMap" id="queryTemplateListResult">
+		<result property="Code" column="CODE" />
+		<result property="Name" column="NAME" />
+		<result property="REMARK" column="REMARK" />
+		<result property="AdTempCode" column="ADTEMPCODE" />
+		<result property="Priority" column="PRIORITY" />
+		<result property="TimeControl" column="TIMECONTROL" />
+		<result property="BeginTime" column="BEGINTIME" />
+		<result property="EndTime" column="ENDTIME" />
+		<result property="DelayHours" column="DELAYHOURS" />
+		<result property="WhiteCode" column="WHITECODE" />
+		<result property="BlackCode" column="BLACKCODE" />
+		<result property="Status" column="STATUS" />
+		<result property="Channels" column="CHANNELS" />
+		<result property="SubChannelStr" column="SUBCHANNELS" />
+		<result property="DefaultChannel" column="DEFAULTCHANNEL" />
+		<result property="Type" column="TEMPTYPE" />
+	</resultMap>
+	<select id="queryTemplateList" resultMap="queryTemplateListResult">
+		SELECT TP.CODE, TEMPTYPE, TP.NAME, REMARK, ADTEMPCODE, PRIORITY, TIMECONTROL, BEGINTIME, ENDTIME, DELAYHOURS, WHITECODE, BLACKCODE, STATUS, CHANNELS, SUBCHANNELS, DEFAULTCHANNEL 
+		FROM PRM_TEMPLATE TP ,PRM_TEMPTYPE TY
+		WHERE TY.CODE=TP.TYPEOF AND STATUS='N'
+	</select>
+	
+	<select id="queryTemplateExtList" resultClass="com.csii.mc.core.datamodel.TemplateExt">
+		SELECT CODE, EXTID, EXTCHANNEL, EXTSUBCHANNEL, EXTCONTENT, EXTTYPE, EXTCOLOR FROM PRM_TEMPLATE_EXT
+	</select>
+	
+	<!-- <select id="queryTemplateAppExtList" resultClass="com.csii.mc.core.datamodel.TemplateAppExt">
+		SELECT CODE, EXTID, EXTCHANNEL, EXTSUBCHANNEL, EXTTITLE, EXTCONTENT, EXTTYPE FROM PRM_APPTEMPLATE_EXT
+	</select> -->
+	
+	<!--黑名单类别查询--> 
+	<resultMap class="java.util.HashMap" id="queryBlackTypesListResult">
+		<result property="CODE" column="CODE" />
+		<result property="NAME" column="NAME" />
+		<result property="REMARK" column="REMARK" />
+		<result property="STS" column="STS" />
+	</resultMap>
+	<select id="queryBlackTypesList"  parameterClass="java.util.HashMap" resultMap="queryBlackTypesListResult">
+	SELECT CODE,NAME,REMARK,STS
+		FROM PRM_BLACKLIST
+		WHERE 1=1
+			 <isNotEmpty prepend=" and" property="Name"> NAME like  '%$Name$%'</isNotEmpty>
+			 <isNotEmpty prepend=" and" property="Code"> CODE = #Code# </isNotEmpty>
+	</select>
+	
+	<!--黑名单明细查询--> 
+	<resultMap class="java.util.HashMap" id="queryBlackDetailListResult">
+		<result property="BATCHID" column="BATCHID" />
+		<result property="CHANNELID" column="CHANNELID" />
+		<result property="CHANNELNAME" column="CHANNELNAME" />
+		<result property="DESTOF" column="DESTOF" />
+		<result property="CODE" column="CODE" />
+		<result property="NAME" column="NAME" />
+		<result property="REMARK" column="REMARK" />
+		<result property="ADDTIME" column="ADDTIME" />
+	</resultMap>
+	<select id="queryBlackDetailList"  parameterClass="java.util.HashMap" resultMap="queryBlackDetailListResult">
+	SELECT BATCHID,BD.CHANNELID,C.CHANNELNAME,DESTOF,BD.CODE,BT.NAME,BD.REMARK,ADDTIME
+		FROM PRM_BLACKLIST_DETAIL BD,PRM_CHANNELCONTRL C ,PRM_BLACKLIST BT 
+            WHERE  C.CHANNELID=BD.CHANNELID AND  BD.CODE=BT.CODE
+			 <isNotEmpty prepend=" and" property="Destof"> BD.DESTOF = #Destof#</isNotEmpty>
+			 <isNotEmpty prepend=" and" property="Code"> BD.CODE = #Code# </isNotEmpty>
+	</select>
+	
+	<resultMap class="java.util.HashMap" id="queryWhiteTypesListResult">
+		<result property="CODE" column="CODE" />
+		<result property="NAME" column="NAME" />
+		<result property="REMARK" column="REMARK" />
+		<result property="STS" column="STATUS" />
+	</resultMap>
+	<select id="queryWhiteTypesList"  parameterClass="java.util.HashMap" resultMap="queryWhiteTypesListResult">
+	SELECT CODE,NAME,REMARK,STATUS 
+		FROM PRM_WHITELIST
+	</select>
+	
+	<select id="queryWhiteDetailList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		SELECT CODE,DESTOF,CHANNELID FROM PRM_WHITELIST_DETAIL WHERE CODE=#CODE#
+	</select>
+	
+	<select id="queryAllDept" resultClass="com.csii.mc.core.datamodel.Dept">
+		SELECT DEPTSEQ AS SEQ,DEPTID AS ID,DEPTNAME AS NAME,ADDR AS ADDRESS,ZIPCODE AS ZIPCODE,PARENTDEPTSEQ AS PARENTSEQ,CITYCODE AS CITYCODE FROM PRM_DEPT WHERE DEPTSTATE='N'
+	</select>
+	
+		<!-- 关键字查询 -->
+	<select id="queryAllKeyword" resultClass="java.lang.String">
+		SELECT KEYWORD 
+		FROM PRM_KEYWORD
+	</select>
+	
+	<select id="queryPushUserByIdNo" parameterClass="java.lang.String" resultClass="com.csii.mc.core.datamodel.PushUser">
+		select deviceToken,deviceType,operFlag,name,idNo,userSeq,deptSeq,subChannel,signDate,closeDate
+		from push_user 
+		where idNo = #idNo#
+	</select>
+	
+	<select id="queryAllUser" resultClass="com.csii.mc.core.datamodel.User">
+		SELECT USERSEQ AS USERSEQ,USERID AS USERSEQ,USERNAME AS USERNAME,PASSWORD AS PASSWORD  FROM CIF_USERINFO WHERE USERSTATE='N'
+	</select>
+	
+	<resultMap class="java.util.HashMap" id="queryRuleListResult">
+		<result property="RuleType" column="RULETYPE" />
+		<result property="RuleId" column="RULEID" />
+		<result property="RuleDef" column="RULEDEF" />
+	</resultMap>
+	
+	<select id="queryAllRuleList" resultMap="queryRuleListResult">
+		SELECT RULETYPE,RULEID,RULEDEF FROM PRM_RULE
+	</select>
+	
+	<select id="querySpTypeList" resultMap="queryRuleListResult">
+		SELECT RULETYPE,RULEID,RULEDEF FROM PRM_RULE WHERE RULETYPE='NoSegment'
+	</select>
+	
+	<select id="queryUsedSendChannelList" resultMap="queryRuleListResult">
+		SELECT RULETYPE,RULEID,RULEDEF FROM PRM_RULE WHERE RULETYPE='SendChannel'
+	</select>
+	
+	<select id="queryUsedQueueLevelList" resultClass="java.lang.String">
+		SELECT RULEID FROM PRM_RULE WHERE RULETYPE='QueueLevel' and RULEDEF='Y' ORDER BY RULEID DESC
+	</select>
+	
+	<select id="queryMonitorSystemList" resultClass="com.csii.mc.core.datamodel.McSystem">
+		SELECT RULEID AS ID, RULEDEF AS NAME  FROM PRM_RULE WHERE RULETYPE='MonitorSystem'
+	</select>
+	
+	
+	<insert id="saveSmMessage" parameterClass="com.csii.mc.core.datamodel.McMessage">
+		INSERT INTO OT_MESSAGE_SM (SID, JNLNO, DISPATCH_SID, TITLE, MSGTYPE, ISBATCH, TELLERCODE, BRANCHCODE, APPID, TEMPCODE, DSTADDR, SRCADDR, PRIORITY, SUCCESSFLAG, CREATETIME, PLANTIME, OUTTIME, SPTYPE, LINENO,TEMPTYPE)
+		VALUES (#sid#, #jnlNo#, #accessChannelJnlno#, #msgContent#, #msgType#, #isBatch#, #tellerCode#, #deptId#, #appId#, #templateCode#, #dstAddr#, #srcAddr#,#priority#, #successFlag#, #createTime#, #planTime#, #outTime#, #subOutChannel#, #lineNo#,#templateType#)
+	</insert>
+	
+	<update id="updateSmMessage" parameterClass="com.csii.mc.core.datamodel.McMessage">
+		UPDATE OT_MESSAGE_SM SET SUCCESSFLAG=#successFlag#
+			<dynamic prepend=" , ">
+				<isNotEmpty prepend=" ," property="responseMsg">
+					MSGINFO = #responseMsg#
+				</isNotEmpty>
+				<isNotEmpty prepend=" ," property="spMsgId">
+					SPMSGID = #spMsgId#
+				</isNotEmpty>
+				<isNotEmpty prepend=" ," property="respTime">
+					RESPTIME = #respTime#
+				</isNotEmpty>
+				<isNotEmpty prepend=" ," property="doneTime">
+					DONETIME = #doneTime#
+				</isNotEmpty>
+				<isNotEmpty prepend=" ," property="outTime">
+					OUTTIME = #outTime#
+				</isNotEmpty>
+
+				<!-- <isNotEmpty prepend=" ," property="sequence">
+					SEQUENCE = #sequence#
+				</isNotEmpty> -->
+				<!-- <isNotEmpty prepend=" ," property="tryTimes">
+					TRYTIMES = #tryTimes#
+				</isNotEmpty> -->
+			</dynamic>
+		where SID=#sid#
+	</update>
+	
+	<insert id="saveWecMessage" parameterClass="com.csii.mc.core.datamodel.McMessage">
+		INSERT INTO OT_MESSAGE_SC (SID, JNLNO, DISPATCH_SID, TITLE, MSGTYPE, ISBATCH, TELLERCODE, BRANCHCODE, APPID, TEMPCODE, DSTADDR, SRCADDR, PRIORITY, SUCCESSFLAG, CREATETIME, PLANTIME, OUTTIME, SPTYPE, LINENO) 
+		VALUES (#sid#, #jnlNo#, #accessChannelJnlno#, #msgContent#, #msgType#, #isBatch#, #tellerCode#, #deptId#, #appId#, #templateCode#, #dstAddr#, #srcAddr#,#priority#, #successFlag#, #createTime#, #planTime#, #outTime#, #subOutChannel#, #lineNo#)
+	</insert>
+	
+	<insert id="saveEmailMessage" parameterClass="com.csii.mc.core.datamodel.McMessage">
+		INSERT INTO OT_MESSAGE_EMAIL (SID, JNLNO, DISPATCH_SID, TITLE, MSGTYPE, ISBATCH, TELLERCODE, BRANCHCODE, APPID, TEMPCODE, DSTADDR, SRCADDR, PRIORITY, SUCCESSFLAG, CREATETIME, PLANTIME, OUTTIME, SPTYPE, LINENO) 
+		VALUES (#sid#, #jnlNo#, #accessChannelJnlno#, #msgContent#, #msgType#, #isBatch#, #tellerCode#, #deptId#, #appId#, #templateCode#, #dstAddr#, #srcAddr#,#priority#, #successFlag#, #createTime#, #planTime#, #outTime#, #subOutChannel#, #lineNo#)
+	</insert>
+	
+	<insert id="saveAppMessage" parameterClass="com.csii.mc.core.datamodel.McMessage">
+		INSERT INTO OT_MESSAGE_APP (SID, JNLNO, DISPATCH_SID, TITLE, MSGTYPE, ISBATCH, TELLERCODE, BRANCHCODE, APPID, TEMPCODE, DSTADDR, SRCADDR, PRIORITY, SUCCESSFLAG, MSGINFO, CREATETIME, PLANTIME, OUTTIME, SPTYPE, LINENO) 
+		VALUES (#sid#, #jnlNo#, #accessChannelJnlno#, #title#, #msgType#, #isBatch#, #tellerCode#, #deptId#, #appId#, #templateCode#, #dstAddr#, #srcAddr#,#priority#, #successFlag#, #msgContent#,#createTime#, #planTime#, #outTime#, #subOutChannel#, #lineNo#)
+	</insert>
+	
+	<select id="getCountOfBlackListByChannelAddress" parameterClass="java.util.HashMap" resultClass="java.lang.Integer"> 
+		SELECT COUNT(*) AS COUNTOF FROM PRM_BLACKLIST_DETAIL WHERE  
+		CHANNELID=#CHANNELID# AND CODE=#CODE# AND DESTOF=#DESTOF#
+	</select>
+	<select id="getCountOfWhiteListByChannelAddress" parameterClass="java.util.HashMap" resultClass="java.lang.Integer"> 
+		SELECT COUNT(*) AS COUNTOF FROM PRM_WHITELIST_DETAIL WHERE  
+		CHANNELID=#CHANNELID# AND CODE=#CODE# AND DESTOF=#DESTOF#
+	</select>
+	<resultMap class="com.csii.mc.core.datamodel.UpInteractive" id="queryUpInteractiveResult">
+		<result property="code" column="CODE"/>
+		<result property="name" column="NAME"/>
+		<result property="type" column="TYPE"/>
+		<result property="channel" column="CHANNEL"/>
+	</resultMap>
+	<select id="queryUpInteractive" resultMap="queryUpInteractiveResult">
+		SELECT CODE,NAME,TYPE,CHANNEL
+		FROM PRM_UPINTERACTIVE
+	</select>
+	<insert id="insertUpSms" parameterClass="java.util.HashMap" >
+		insert into OT_DISPATCHSMS
+		(SID,DESTADDR,MSGCONTENT,SRCID,MOBILERESULT,RECVTIME
+		<dynamic>
+			<isNotEmpty prepend="," property="MOBILETYPE">MOBILETYPE</isNotEmpty>
+			<isNotEmpty prepend="," property="MSGID">MSGID</isNotEmpty>
+			<isNotEmpty prepend="," property="SMSCOMMAND_ID">SMSCOMMAND_ID</isNotEmpty>
+		</dynamic>
+		)
+		VALUES(#SID#,#DESTADDR#,#MSGCONTENT#,#SRCID#,#MOBILERESULT#,#RECVTIME#
+		<dynamic>
+			<isNotEmpty prepend="," property="MOBILETYPE">#MOBILETYPE#</isNotEmpty>
+			<isNotEmpty prepend="," property="MSGID">#MSGID#</isNotEmpty>
+			<isNotEmpty prepend="," property="SMSCOMMAND_ID">#SMSCOMMAND_ID#</isNotEmpty>
+		</dynamic>
+		)
+	</insert>
+</sqlMap>
